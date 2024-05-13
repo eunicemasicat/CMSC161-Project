@@ -1,0 +1,88 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+<title>161 Project</title>
+<!--Import external javascript file-->
+<!--Helper javascript methods for initializing webgl-->
+<script type="x-shader/x-vertex" id="vshader" defer>
+	attribute vec4 aPosition;
+	attribute vec4 aNormal;   //variable for normal vector at each vertex
+
+	uniform mat4 uModelMatrix;                //Model Matrix
+	uniform mat4 uViewMatrix;                 //View Matrix
+	uniform mat4 uProjectionMatrix;           //Projection Matrix
+
+	uniform mat4 uNormalMatrix;               //Normal Matrix
+
+	uniform vec4 uMaterialDiffuseColor;       //Kd
+	uniform vec4 uLightDiffuseColor;          //Ld
+	uniform vec4 uLightDirectionVector;       //l
+
+	uniform float uShine;
+	uniform float isPhong;
+
+	varying vec4 vDiffuseColor;
+
+	varying vec4 vSpecularColor;
+
+	void main() {
+
+		gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * aPosition;
+
+		//get Corrected Normal vector from transformation
+		vec4 corrected_aNormal = uNormalMatrix * aNormal;
+
+		//get normalized normal and light vector
+		vec4 normalized_aNormalVector = normalize(corrected_aNormal);
+		vec4 normalized_uLightDirectionVector = normalize(uLightDirectionVector);
+
+		//get lambertCooeficient = (-l . n)
+		float lambertCoefficient = max(dot(-normalized_uLightDirectionVector,normalized_aNormalVector),0.0);
+
+		//Fd = Ld * Kd * (n dot -l)
+		vec4 diffuseColor =  uMaterialDiffuseColor * uLightDiffuseColor * lambertCoefficient;
+
+		vDiffuseColor = vec4(diffuseColor.r, diffuseColor.g, diffuseColor.b, 1.0);
+
+		vec3 fragToCam = normalize(-gl_Position.xyz);
+		vec4 fragToCam4 = vec4(fragToCam.x, fragToCam.y, fragToCam.z, 1);
+
+		vec4 reflectionDirection = reflect(normalized_uLightDirectionVector, normalized_aNormalVector);
+
+		float specularValue = pow(max(dot(reflectionDirection, fragToCam4), 0.0), uShine);
+
+		vec4 specularColor = uMaterialDiffuseColor * uLightDiffuseColor * specularValue;
+
+		vSpecularColor = vec4(specularColor.r, specularColor.g, specularColor.b, 1.0);
+
+	}
+</script>
+
+<script type="x-shader/x-fragment" id="fshader">
+	precision mediump float;
+
+	uniform float isPhong;
+	varying vec4 vDiffuseColor;
+	varying vec4 vSpecularColor;
+	void main() {
+		if (isPhong > float(0)) {
+			gl_FragColor = vSpecularColor;
+		} else {
+			gl_FragColor = vDiffuseColor;
+		}
+	}
+</script>
+
+<script src="./lib/webgl-init.js" defer></script>
+<script src="./lib/webgl-utils.js" defer></script>
+<script src="./lib/webgl-debug.js" defer></script>
+<script src="./lib/gl-matrix-min.js" defer></script>
+
+<script src="main.js" defer></script>
+</head>
+
+<body>
+<h1>161 PROJECT</h1>
+<canvas id="main_canvas" width="800" height="800" style="border: 1px black solid; "></canvas>
+</body>
+</html>
