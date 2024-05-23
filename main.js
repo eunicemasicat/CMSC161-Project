@@ -152,28 +152,16 @@ var isPhong = true;
 
 time = 0;
 
-function rotateY(m, angle) {
-	var c = Math.cos(angle);
-	var s = Math.sin(angle);
-	var mv0 = m[0], mv4 = m[4], mv8 = m[8];
+// rotate x
+// function Rx(value) {
+// 	return [1, 0, 0, 0,
+// 			0, Math.cos(value), -Math.sin(value), 0,
+// 			0, Math.sin(value), Math.cos(value), 0,
+// 			0, 0, 0, 1
+// 		]
+// }
 
-	m[0] = c*m[0]+s*m[2];
-	m[4] = c*m[4]+s*m[6];
-	m[8] = c*m[8]+s*m[10];
-
-	m[2] = c*m[2]-s*mv0;
-	m[6] = c*m[6]-s*mv4;
-	m[10] = c*m[10]-s*mv8;
-}
-
-function Rx(value) {
-	return [1, 0, 0, 0,
-			0, Math.cos(value), -Math.sin(value), 0,
-			0, Math.sin(value), Math.cos(value), 0,
-			0, 0, 0, 1
-		]
-}
-
+//rotate y (this is what we're using with the rotation in the camera)
 function Ry(value) {
 	return [Math.cos(value), 0, Math.sin(value), 0,
 			0, 1, 0, 0,
@@ -306,31 +294,6 @@ function performDraw(){
 
 performDraw(0)
 
-function handleKeyDown(event) {
-    if (event.key === "w") {
-    	wasdPressed[0] = true
-    } else if (event.key === "a") {
-    	wasdPressed[1] = true
-    } else if (event.key === "s") {
-    	wasdPressed[2] = true
-    } else if (event.key === "d") {
-    	wasdPressed[3] = true
-    }
-}
-
-// Function to handle keyup event
-function handleKeyUp(event) {
-    if (event.key === "w") {
-    	wasdPressed[0] = false
-    } else if (event.key === "a") {
-    	wasdPressed[1] = false
-    } else if (event.key === "s") {
-    	wasdPressed[2] = false
-    } else if (event.key === "d") {
-    	wasdPressed[3] = false
-    }
-}
-
 // Function to request pointer lock
 function requestPointerLock() {
     canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
@@ -367,6 +330,3 @@ canvas.addEventListener("click", requestPointerLock);
 document.addEventListener("pointerlockchange", handlePointerLockChange, false);
 document.addEventListener("mozpointerlockchange", handlePointerLockChange, false);
 document.addEventListener("webkitpointerlockchange", handlePointerLockChange, false);
-// Attach keydown and keyup event listeners to the window
-window.addEventListener("keydown", handleKeyDown);
-window.addEventListener("keyup", handleKeyUp);
