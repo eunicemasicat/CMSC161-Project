@@ -21,6 +21,93 @@ const programInfo = {
 	uTransformMatrixPointer:gl.getUniformLocation(program,"uTransformMatrix")
 }
 
+const ceiling = {
+	vertices: [
+		// Floor
+		-40.0, 0.0, -40.0, 1.0,
+		40.0, 0.0, -40.0, 1.0,
+		40.0, 0.0, 40.0, 1.0,
+		-40.0, 0.0, 40.0, 1.0,
+	
+		// Ceiling
+		-40.0, 15.0, -40.0, 1.0,
+		40.0, 15.0, -40.0, 1.0,
+		40.0, 15.0, 40.0, 1.0,
+		-40.0, 15.0, 40.0, 1.0,
+	],
+	indices: [
+		// Floor
+		0, 1, 2,
+		0, 2, 3,
+	
+		// Ceiling
+		4, 5, 6,
+		4, 6, 7,
+	],
+	normals: [
+		0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,  	// bottom
+		0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,  		// top
+	],
+	lightDirectionVector: [1, -3, -5, 0],
+	lightColorVector: [1, 1, 1, 1],
+	lightEyePositionVector: [1, 1, -5, 0],
+	materialColorVector: [1, 1, 1, 1],
+	rotationRate : 0, // degrees per second
+	currentRotation : 0, // default degrees
+	position: [0, 0, 10]
+}
+
+const walls = {
+	vertices: [
+		// Walls
+		-40.0, 0.0, -40.0, 1.0,
+		-40.0, 15.0, -40.0, 1.0,
+		-40.0, 15.0, 40.0, 1.0,
+		-40.0, 0.0, 40.0, 1.0,
+	
+		40.0, 0.0, -40.0, 1.0,
+		40.0, 15.0, -40.0, 1.0,
+		40.0, 15.0, 40.0, 1.0,
+		40.0, 0.0, 40.0, 1.0,
+	
+		-40.0, 0.0, -40.0, 1.0,
+		40.0, 0.0, -40.0, 1.0,
+		40.0, 15.0, -40.0, 1.0,
+		-40.0, 15.0, -40.0, 1.0,
+	
+		-40.0, 0.0, 40.0, 1.0,
+		40.0, 0.0, 40.0, 1.0,
+		40.0, 15.0, 40.0, 1.0,
+		-40.0, 15.0, 40.0, 1.0,
+	],
+	indices: [
+		0, 1, 2,
+		0, 2, 3,
+
+		4, 5, 6,
+		4, 6, 7,
+
+		8, 9, 10,
+		8, 10, 11,
+	
+		12, 13, 14,
+		12, 14, 15,
+	],
+	normals: [
+		1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,  		// right
+		-1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0,   	// left
+		0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,  	// back
+		0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,  		// front
+	],
+	lightDirectionVector: [1, -3, -5, 0],
+	lightColorVector: [1, 1, 1, 1],
+	lightEyePositionVector: [1, 1, -5, 0],
+	materialColorVector: [1, 1, 1, 1],
+	rotationRate : 0, // degrees per second
+	currentRotation : 0, // default degrees
+	position: [0, 0, 10]
+}
+
 const cubeObject1 = {
 	vertices: [
 		// Front face
@@ -79,9 +166,9 @@ const cubeObject1 = {
 	lightColorVector: [1, 1, 1, 1],
 	lightEyePositionVector: [1, -3, -5, 0],
 	materialColorVector: [0, 1, 1, 1],
-	rotationRate : 5, // degrees per second
+	rotationRate : 0, // degrees per second
 	currentRotation : 0, // default degrees
-	position: [2, 0, 25]
+	position: [0, 1, 60]
 }
 
 const cubeObject2 = {...cubeObject1}
@@ -94,41 +181,17 @@ const cubeObject8 = {...cubeObject1}
 const cubeObject9 = {...cubeObject1}
 const cubeObject10 = {...cubeObject1}
 
-cubeObject2.position = [2, 0, -25]
+cubeObject2.position = [0, 1, -7]
 cubeObject2.materialColorVector = [0, 0.8, 0, 1]
-cubeObject2.rotationRate = 10
+cubeObject2.rotationRate = 0
 
-cubeObject3.position = [25, 0, 2]
+cubeObject3.position = [45, 1, 25]
 cubeObject3.materialColorVector = [1, 0.5, 0, 1]
-cubeObject3.rotationRate = 7
+cubeObject3.rotationRate = 0
 
-cubeObject4.position = [-25, 0, 2]
+cubeObject4.position = [-25, 1, 2]
 cubeObject4.materialColorVector = [0, 1, 1, 1]
-cubeObject4.rotationRate = 8
-
-cubeObject5.position = [-13, 0, 14]
-cubeObject5.materialColorVector = [0.5, 0.2, 0.5, 1]
-cubeObject5.rotationRate = 9
-
-cubeObject6.position = [-18, 1, -5]
-cubeObject6.materialColorVector = [0.2, 0.6, 0.7, 1]
-cubeObject6.rotationRate = 11
-
-cubeObject7.position = [6, 2, 18]
-cubeObject7.materialColorVector = [0.1, 0.2, 0.5, 1]
-cubeObject7.rotationRate = 17
-
-cubeObject8.position = [15, 0, 15]
-cubeObject8.materialColorVector = [0.3, 0.5, 0.1, 1]
-cubeObject8.rotationRate = 16
-
-cubeObject9.position = [20, 3, 10]
-cubeObject9.materialColorVector = [0, 0.3, 0.7, 1]
-cubeObject9.rotationRate = 14
-
-cubeObject10.position = [25, 0, -7]
-cubeObject10.materialColorVector = [0.6, 0, 0.7, 1]
-cubeObject10.rotationRate = 13
+cubeObject4.rotationRate = 0
 
 const cameraObject = {
 	x : 0,
@@ -175,12 +238,12 @@ vec4.set(defaultCameraLookPoint, 0, 0, 100, 0);
 
 function drawObject(cubeObject, delta) {
 	//MODEL & NORMAL MATRIX
-	cubeObject.currentRotation += cubeObject.rotationRate * delta
+	// cubeObject.currentRotation += cubeObject.rotationRate * delta
 	var modelMatrix = mat4.create();
 	var normalMatrix = mat4.create();
-	ry = Ry(cubeObject.currentRotation);			// Rotation Matrix Around Y Axis
+	// ry = Ry(cubeObject.currentRotation);			// Rotation Matrix Around Y Axis
 	mat4.translate(modelMatrix, modelMatrix, cubeObject.position);
-	mat4.multiply(modelMatrix, modelMatrix, ry);
+	// mat4.multiply(modelMatrix, modelMatrix, ry);
 	gl.uniformMatrix4fv(programInfo.uModelMatrixPointer, false, new Float32Array(modelMatrix));
 	mat4.invert(normalMatrix, modelMatrix);
 	mat4.transpose(normalMatrix, normalMatrix);
@@ -253,7 +316,7 @@ function performDraw(){
 	var projectionMatrix;
 
 	/**START PROJECTION MATRIX SPECIFICATION**/
-	var fieldOfViewYAxis = glMatrix.toRadian(30);
+	var fieldOfViewYAxis = glMatrix.toRadian(55);
 	var aspectRatio      = canvas.width/canvas.height;
 	var nearPlane        = 1;
 	var farPlane         = 100;
@@ -264,7 +327,7 @@ function performDraw(){
 	/**END PROJECTION MATRIX SPECIFICATION**/
 
 	/**START VIEW MATRIX SPECIFICATION**/
-	var eyePoint    = [0.0,0.0,0.0,1.0];              //where the camera is placed
+	var eyePoint    = [0.0,5.0,10.0,1.0];              //where the camera is placed
 	var upVector    = [0.0,1.0,0.0,0.0];              //orientation of the camera
     //rx = Rx(cameraObject.vertical);				// Rotation Matrix Around X Axis (IGNORED ACCORDING TO PROJECT SPECS)
     ry = Ry(cameraObject.horizontal);			// Rotation Matrix Around Y Axis
@@ -279,16 +342,12 @@ function performDraw(){
 	gl.uniformMatrix4fv(programInfo.uViewMatrixPointer, false, new Float32Array(viewMatrix));
 	/**END VIEW MATRIX SPECIFICATION**/
 
-	drawObject(cubeObject1, deltaTime/1000);
-	drawObject(cubeObject2, deltaTime/1000);
-	drawObject(cubeObject3, deltaTime/1000);
-	drawObject(cubeObject4, deltaTime/1000);
-	drawObject(cubeObject5, deltaTime/1000);
-	drawObject(cubeObject6, deltaTime/1000);
-	drawObject(cubeObject7, deltaTime/1000);
-	drawObject(cubeObject8, deltaTime/1000);
-	drawObject(cubeObject9, deltaTime/1000);
-	drawObject(cubeObject10, deltaTime/1000);
+	drawObject(walls, deltaTime/1000);
+	drawObject(ceiling, deltaTime/1000);
+	// drawObject(cubeObject1, deltaTime/1000);
+	// drawObject(cubeObject2, deltaTime/1000);
+	// drawObject(cubeObject3, deltaTime/1000);
+	// drawObject(cubeObject4, deltaTime/1000);
 	window.requestAnimationFrame(performDraw);
 }
 
