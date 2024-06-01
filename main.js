@@ -1,3 +1,7 @@
+import * as panda from './panda/calma_object.js';
+import * as panda2 from './panda/calma_object2.js';
+import * as panda3 from './panda/calma_object3.js';
+
 var canvas = document.getElementById("main_canvas");
 if(!canvas) {
 	console.log("Failed to retrieve the <canvas> element");
@@ -30,10 +34,10 @@ const ceiling = {
 		-40.0, 0.0, 40.0, 1.0,
 	
 		// Ceiling
-		-40.0, 15.0, -40.0, 1.0,
-		40.0, 15.0, -40.0, 1.0,
-		40.0, 15.0, 40.0, 1.0,
-		-40.0, 15.0, 40.0, 1.0,
+		-40.0, 25.0, -40.0, 1.0,
+		40.0, 25.0, -40.0, 1.0,
+		40.0, 25.0, 40.0, 1.0,
+		-40.0, 25.0, 40.0, 1.0,
 	],
 	indices: [
 		// Floor
@@ -61,24 +65,24 @@ const walls = {
 	vertices: [
 		// Walls
 		-40.0, 0.0, -40.0, 1.0,
-		-40.0, 15.0, -40.0, 1.0,
-		-40.0, 15.0, 40.0, 1.0,
+		-40.0, 25.0, -40.0, 1.0,
+		-40.0, 25.0, 40.0, 1.0,
 		-40.0, 0.0, 40.0, 1.0,
 	
 		40.0, 0.0, -40.0, 1.0,
-		40.0, 15.0, -40.0, 1.0,
-		40.0, 15.0, 40.0, 1.0,
+		40.0, 25.0, -40.0, 1.0,
+		40.0, 25.0, 40.0, 1.0,
 		40.0, 0.0, 40.0, 1.0,
 	
 		-40.0, 0.0, -40.0, 1.0,
 		40.0, 0.0, -40.0, 1.0,
-		40.0, 15.0, -40.0, 1.0,
-		-40.0, 15.0, -40.0, 1.0,
+		40.0, 25.0, -40.0, 1.0,
+		-40.0, 25.0, -40.0, 1.0,
 	
 		-40.0, 0.0, 40.0, 1.0,
 		40.0, 0.0, 40.0, 1.0,
-		40.0, 15.0, 40.0, 1.0,
-		-40.0, 15.0, 40.0, 1.0,
+		40.0, 25.0, 40.0, 1.0,
+		-40.0, 25.0, 40.0, 1.0,
 	],
 	indices: [
 		0, 1, 2,
@@ -108,91 +112,6 @@ const walls = {
 	position: [0, 0, 10]
 }
 
-const cubeObject1 = {
-	vertices: [
-		// Front face
-		-1.0, -1.0,  1.0, 1.0,
-		 1.0, -1.0,  1.0, 1.0,
-		 1.0,  1.0,  1.0, 1.0,
-		-1.0,  1.0,  1.0, 1.0,
-
-		// Back face
-		-1.0, -1.0, -1.0, 1.0,
-		-1.0,  1.0, -1.0, 1.0,
-		 1.0,  1.0, -1.0, 1.0,
-		 1.0, -1.0, -1.0, 1.0,
-
-		// Top face
-		-1.0,  1.0, -1.0, 1.0,
-		-1.0,  1.0,  1.0, 1.0,
-		 1.0,  1.0,  1.0, 1.0,
-		 1.0,  1.0, -1.0, 1.0,
-
-		// Bottom face
-		-1.0, -1.0, -1.0, 1.0,
-		 1.0, -1.0, -1.0, 1.0,
-		 1.0, -1.0,  1.0, 1.0,
-		-1.0, -1.0,  1.0, 1.0,
-
-		// Right face
-		 1.0, -1.0, -1.0, 1.0,
-		 1.0,  1.0, -1.0, 1.0,
-		 1.0,  1.0,  1.0, 1.0,
-		 1.0, -1.0,  1.0, 1.0,
-
-		// Left face
-		-1.0, -1.0, -1.0, 1.0,
-		-1.0, -1.0,  1.0, 1.0,
-		-1.0,  1.0,  1.0, 1.0,
-		-1.0,  1.0, -1.0, 1.0
-	],
-	indices: [
-		0, 1, 2,      0, 2, 3,    // Front face
-		4, 5, 6,      4, 6, 7,    // Back face
-		8, 9, 10,     8, 10, 11,  // Top face
-		12, 13, 14,   12, 14, 15, // Bottom face
-		16, 17, 18,   16, 18, 19, // Right face
-		20, 21, 22,   20, 22, 23  // Left face
-	],
-	normals: [
-		0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,   0.0, 0.0, 1.0, 0.0,  		// front
-		0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,   0.0, 0.0, -1.0, 0.0,  	// front
-		0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,   0.0, 1.0, 0.0, 0.0,  		// front
-		0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,   0.0, -1.0, 0.0, 0.0,  	// front
-		1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,   1.0, 0.0, 0.0, 0.0,  		// right
-		-1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0,  -1.0, 0.0, 0.0, 0.0   	// left
-	],
-	lightDirectionVector: [1, -3, -5, 0],
-	lightColorVector: [1, 1, 1, 1],
-	lightEyePositionVector: [1, -3, -5, 0],
-	materialColorVector: [0, 1, 1, 1],
-	rotationRate : 0, // degrees per second
-	currentRotation : 0, // default degrees
-	position: [0, 1, 60]
-}
-
-const cubeObject2 = {...cubeObject1}
-const cubeObject3 = {...cubeObject1}
-const cubeObject4 = {...cubeObject1}
-const cubeObject5 = {...cubeObject1}
-const cubeObject6 = {...cubeObject1}
-const cubeObject7 = {...cubeObject1}
-const cubeObject8 = {...cubeObject1}
-const cubeObject9 = {...cubeObject1}
-const cubeObject10 = {...cubeObject1}
-
-cubeObject2.position = [0, 1, -7]
-cubeObject2.materialColorVector = [0, 0.8, 0, 1]
-cubeObject2.rotationRate = 0
-
-cubeObject3.position = [45, 1, 25]
-cubeObject3.materialColorVector = [1, 0.5, 0, 1]
-cubeObject3.rotationRate = 0
-
-cubeObject4.position = [-25, 1, 2]
-cubeObject4.materialColorVector = [0, 1, 1, 1]
-cubeObject4.rotationRate = 0
-
 const cameraObject = {
 	x : 0,
 	y : 0,
@@ -213,7 +132,7 @@ gl.enableVertexAttribArray(programInfo.aNormalPointer);
 
 var isPhong = true;
 
-time = 0;
+var time = 0;
 
 // rotate x
 // function Rx(value) {
@@ -327,10 +246,10 @@ function performDraw(){
 	/**END PROJECTION MATRIX SPECIFICATION**/
 
 	/**START VIEW MATRIX SPECIFICATION**/
-	var eyePoint    = [0.0,5.0,10.0,1.0];              //where the camera is placed
+	var eyePoint    = [0.0,10.0,10.0,1.0];              //where the camera is placed
 	var upVector    = [0.0,1.0,0.0,0.0];              //orientation of the camera
     //rx = Rx(cameraObject.vertical);				// Rotation Matrix Around X Axis (IGNORED ACCORDING TO PROJECT SPECS)
-    ry = Ry(cameraObject.horizontal);			// Rotation Matrix Around Y Axis
+    var ry = Ry(cameraObject.horizontal);			// Rotation Matrix Around Y Axis
 
     //var cameraRotation = mat4.create();			// CAMERA IDENTITY MATRIX
     //mat4.multiply(cameraRotation, rx, ry);		// ROTATE CAMERA BY RX AND RY (IGNORED ACCORDING TO PROJECT SPECS)
@@ -344,10 +263,15 @@ function performDraw(){
 
 	drawObject(walls, deltaTime/1000);
 	drawObject(ceiling, deltaTime/1000);
-	// drawObject(cubeObject1, deltaTime/1000);
-	// drawObject(cubeObject2, deltaTime/1000);
-	// drawObject(cubeObject3, deltaTime/1000);
-	// drawObject(cubeObject4, deltaTime/1000);
+	Object.values(panda).forEach(object => {
+		drawObject(object, deltaTime/1000)
+	});
+	Object.values(panda2).forEach(object => {
+		drawObject(object, deltaTime/1000)
+	});
+	Object.values(panda3).forEach(object => {
+		drawObject(object, deltaTime/1000)
+	});
 	window.requestAnimationFrame(performDraw);
 }
 
