@@ -263,15 +263,15 @@ function performDraw(){
 
 	drawObject(walls, deltaTime/1000);
 	drawObject(ceiling, deltaTime/1000);
-	Object.values(panda).forEach(object => {
-		drawObject(object, deltaTime/1000)
-	});
-	Object.values(panda2).forEach(object => {
-		drawObject(object, deltaTime/1000)
-	});
-	Object.values(panda3).forEach(object => {
-		drawObject(object, deltaTime/1000)
-	});
+	// Object.values(panda).forEach(object => {
+	// 	drawObject(object, deltaTime/1000)
+	// });
+	// Object.values(panda2).forEach(object => {
+	// 	drawObject(object, deltaTime/1000)
+	// });
+	// Object.values(panda3).forEach(object => {
+	// 	drawObject(object, deltaTime/1000)
+	// });
 	window.requestAnimationFrame(performDraw);
 }
 
