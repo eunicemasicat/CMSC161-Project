@@ -12,7 +12,7 @@ let lastMouseX = 0;
 async function preload() {
   try {
     obj1 = await loadModel('star_girl.obj');
-    obj2 = await loadModel('test.obj');
+    obj2 = await loadModel('takodachi.obj');
     wallTexture = loadImage('wall.jpg');
     floorTexture = loadImage('wood.jpg');
     ceilingTexture = loadImage('ceiling.jpg');
