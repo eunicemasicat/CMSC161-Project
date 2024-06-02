@@ -2,68 +2,142 @@ let angle = 0;
 let obj1;
 let obj2;
 
-async function preload(){
+let wallTexture;
+let ceilingTexture;
+
+let camAngle = 0;
+let lastMouseX = 0;
+
+async function preload() {
   try {
     obj1 = await loadModel('star_girl.obj');
     obj2 = await loadModel('test.obj');
-    console.log("Model loaded successfully");
-  } catch(err) {
+    wallTexture = loadImage('wall.jpg');
+    ceilingTexture = loadImage('wood.jpg');
+    console.log("Models loaded successfully");
+  } catch (err) {
     console.error("Error loading model:", err);
   }
+
+  //wallTexture = loadModel('wall.jpg');
 }
+
 function setup() {
   createCanvas(1900, 1080, WEBGL);
 }
 
-function draw() {
 
-  // Setting the vector values  
-  // or the direction of light 
-  let dx = 300; 
-  let dy = 200; 
-  let dz = -500; 
-  let v = createVector(dx, dy, dz); 
+
+function draw() {
+  // Set camera position
+  let camX = sin(camAngle);
+  let camZ = cos(camAngle);
+  camera(camX, 0, camZ, 0, 0, 0, 0, 1, 0);
+
+  // Setting the vector values for the directional light
+  let dx = 500;
+  let dy = 500;
+  let dz = 250;
 
   // Creating the ambient light  
-  ambientLight(0, 0,255); 
-    
+  ambientLight(64, 64, 64);
+
+  lights();
+
+  // Create spotlight
+  spotLight(128, 128, 128, -1500, 500, 1500, 1, 0, 0, PI / 4, 5);
+
   // Creating the directional light 
   // by using the given vector 
-  directionalLight(255, 0, 0, v); 
-    
-  shininess(255); 
-  specularColor(255); 
-  specularMaterial(255); 
+  //directionalLight(255, 255, 255, dx, dy, dz);
 
-  background(255);
-  ambientMaterial(128,128,128);
-  translate(0,0,0);
-  fill(200);
-  box(4000, 1000, 4000);
+  shininess(16);
+  specularColor(255, 255, 255);
+  specularMaterial(255, 255, 255);
 
-  // given points from the given directions 
-  pointLight(255, 255, 255, 0, -50, 0); 
-  pointLight(255, 255, 255, 200,200,30); 
+  background(255, 255, 255);
+  ambientMaterial(128, 128, 128);
 
-  rotateX(20);
-  rotateZ(angle);
-  
- 
-  // Render first model
+  // Draw rectangle (rectangular prism)
+  //push();
+  textureMode(NORMAL);
+
+  //fill(255,255,255); // Rectangle color
+  beginShape(QUADS);
+
+  texture(wallTexture);
+  vertex(-1500, -250, 1500, 0, 0);
+  vertex(1500, -250, 1500, 1, 0);
+  vertex(1500, 250, 1500, 1, 1);
+  vertex(-1500, 250, 1500, 0, 1);
+
+  // Back face
+  texture(wallTexture);
+  vertex(-1500, -250, -1500, 0, 0);
+  vertex(-1500, 250, -1500, 0, 1);
+  vertex(1500, 250, -1500, 1, 1);
+  vertex(1500, -250, -1500, 1, 0);
+
+  // Left face
+  texture(wallTexture);
+  vertex(-1500, -250, 1500, 0, 0);
+  vertex(-1500, 250, 1500, 0, 1);
+  vertex(-1500, 250, -1500, 1, 1);
+  vertex(-1500, -250, -1500, 1, 0);
+
+  // Right face
+  texture(wallTexture);
+  vertex(1500, -250, 1500, 0, 0);
+  vertex(1500, -250, -1500, 1, 0);
+  vertex(1500, 250, -1500, 1, 1);
+  vertex(1500, 250, 1500, 0, 1);
+
+  endShape();
+
+  beginShape(QUADS);
+
+  // Top face
+  texture(ceilingTexture);
+  vertex(-1500, 250, 1500, 0, 0);
+  vertex(1500, 250, 1500, 1, 0);
+  vertex(1500, 250, -1500, 1, 1);
+  vertex(-1500, 250, -1500, 0, 1);
+
+  // Bottom face
+  texture(ceilingTexture);
+  vertex(-1500, -250, 1500, 0, 0);
+  vertex(-1500, -250, -1500, 0, 1);
+  vertex(1500, -250, -1500, 1, 1);
+  vertex(1500, -250, 1500, 1, 0);
+
+  endShape();
+  //pop();
+
+  // Position models inside rectangle
+  //push(); // Save current transformation state
+  //translate(0, 0, 0); // Move to left side of rectangle
+  //scale(1); // Scale down model 1
+  //noStroke();
+  //model(obj1);
+  //pop(); // Restore previous transformation state
+
   push(); // Save current transformation state
-  translate(-100, 0, 0); // Move to left side
-  scale(1); // Scale down
-  noStroke();
-  model(obj1);
-  pop(); // Restore previous transformation state
-
-  // Render second model
-  push(); // Save current transformation state
-  translate(100, 0, 0); // Move to right side
-  scale(100); // Scale down
+  translate(1500, 0, 0); // Move to right side of rectangle
+  rotateX(135);
+  scale(150); // Scale down model 2
   noStroke();
   model(obj2);
   pop(); // Restore previous transformation state
+
   
-  //angle += 0.02;
+}
+
+function mousePressed() {
+  lastMouseX = mouseX;
+}
+
+function mouseDragged() {
+  let deltaX = mouseX - lastMouseX;
+  camAngle += deltaX * 0.01;
+  lastMouseX = mouseX;
 }
