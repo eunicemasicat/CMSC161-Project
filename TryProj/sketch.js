@@ -33,16 +33,9 @@ function setup() {
 
 function draw() {
   // Set camera position
-  let camX = sin(camAngle)*1000;
-  let camZ = cos(camAngle)*1000;
+  let camX = sin(camAngle)*900;
+  let camZ = cos(camAngle)*900;
   camera(camX, 0, camZ, 0, 0, 0, 0, 1, 0);
-
-  // Setting the vector values for the directional light
-  let dx = 500;
-  let dy = 500;
-  let dz = 250;
-
-  depthTest();
 
   // Creating the ambient light  
   ambientLight(64, 64, 64);
@@ -51,25 +44,15 @@ function draw() {
 
   // Create spotlight
   spotLight(255, 255, 255, 0, 0, 0, 0, 0, -1, PI / 2,50);
-  pointLight(255, 0, 255, 0, 0, 0);
-
-  // Creating the directional light 
-  // by using the given vector 
-  //directionalLight(255, 255, 255, dx, dy, dz);
 
   shininess(32);
   specularColor(255, 255, 255);
   specularMaterial(48, 48, 48);
-
-  //background(255, 255, 255);
   ambientMaterial(32, 32, 32);
 
-  // Draw rectangle (rectangular prism)
   textureMode(NORMAL);
 
   beginShape(QUADS);
-
-  //depthTest(DISABLE_DEPTH_TEST);
   texture(ceilingTexture);
   vertex(-1500, -250, 1500, 0, 0);
   vertex(1500, -250, 1500, 1, 0);
@@ -93,13 +76,9 @@ function draw() {
   vertex(1500, -250, -1500, 1, 0);
   vertex(1500, 250, -1500, 1, 1);
   vertex(1500, 250, 1500, 0, 1);
-
   endShape();
 
   beginShape(QUADS);
-
-  //depthTest(DISABLE_DEPTH_TEST);
-  // Top face
   texture(floorTexture);
   vertex(-1500, 250, 1500, 0, 0);
   vertex(1500, 250, 1500, 1, 0);
@@ -109,37 +88,34 @@ function draw() {
   endShape();
 
   beginShape(QUADS);
-
-  //depthTest(DISABLE_DEPTH_TEST);
-  // Bottom face
   texture(ceilingTexture);
   vertex(-1500, -250, 1500, 0, 0);
   vertex(-1500, -250, -1500, 0, 1);
   vertex(1500, -250, -1500, 1, 1);
   vertex(1500, -250, 1500, 1, 0);
-
   endShape();
-  //pop();
 
-  // Position models inside rectangle
-  //push(); // Save current transformation state
-  //translate(0, 0, 0); // Move to left side of rectangle
-  //scale(1); // Scale down model 1
-  //noStroke();
-  //model(obj1);
-  //pop(); // Restore previous transformation state
+  noLights();
 
-  push(); // Save current transformation state
-
-
-  //depthTest(DISABLE_DEPTH_TEST);
-
-  translate(0, 0, -1000); // Move to right side of rectangle
+  push();
+  translate(0, 0, -1480);
   rotateX(135);
-  scale(150); // Scale down model 2
+  scale(145, 145, 25);
+  fill(0, 0, 0, 255); 
   noStroke();
   model(obj2);
-  pop(); // Restore previous transformation state
+  pop();
+
+  lights();
+
+  push();
+  translate(0, 0, -1000); 
+  rotateX(135);
+  scale(150); 
+  noStroke();
+  specularMaterial(128, 0, 128); // Set obj2 to be reflective
+  model(obj2);
+  pop();
 
   
 }
