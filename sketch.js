@@ -13,6 +13,7 @@ async function preload() {
   try {
     obj1 = await loadModel('star_girl.obj');
     obj2 = await loadModel('takodachi.obj');
+    obj3 = await loadModel('floating_island.obj');
     wallTexture = loadImage('wall.jpg');
     floorTexture = loadImage('wood.jpg');
     ceilingTexture = loadImage('ceiling.jpg');
@@ -39,9 +40,9 @@ function draw() {
   lights();
 
   // Create spotlight
-  spotLight(255, 255, 255, 0, 0, -50, 0, 0, -1, PI / 2, 50);
+  spotLight(255, 255, 255, 850, 0, -50, 0, 0, -1, PI / 2, 50);
   spotLight(255, 255, 255, 0, 0, 50, 0, 0, 1, PI / 8, 100);
-  //spotLight(255, 0, 255, 1000, 0, 1000, 1, 0, 1, PI / 2, 50);
+  spotLight(255, 255, 255, -800, 0, 50, 0, 0, -1, PI / 2, 50);
   
   shininess(16);
   specularColor(255, 255, 255);
@@ -96,7 +97,7 @@ function draw() {
   noLights();
 
   push();
-  translate(0, 0, -1480);
+  translate(800, 0, -1480);
   rotateX(135);
   scale(145, 145, 25);
   fill(0, 0, 0, 255);
@@ -107,7 +108,7 @@ function draw() {
   lights();
 
   push();
-  translate(0, 0, -1000);
+  translate(800, 0, -1000);
   rotateX(135);
   scale(150);
   noStroke();
@@ -142,6 +143,32 @@ function draw() {
   noStroke();
   fill(128, 64, 128); // Set obj2 to be reflective
   model(obj1);
+  pop();
+
+  
+  noLights();
+
+  push();
+  translate(-800, 0, -1480);
+  rotateX(135);
+  scale(145, 145, 25);
+  fill(0, 0, 0, 255);
+  noStroke();
+  model(obj3);
+  pop();
+
+  lights();
+
+  ambientLight(32, 32, 32);
+  pointLight(32, 32, 32, -800, 100, 1000); // Add a point light source from infront of object
+
+  push();
+  translate(-800, 0, -800);
+  rotateX(135);
+  scale(150);
+  noStroke();
+  specularMaterial(128, 0, 128); // Set obj2 to be reflective
+  model(obj3);
   pop();
 }
 
