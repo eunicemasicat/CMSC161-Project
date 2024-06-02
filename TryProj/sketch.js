@@ -3,6 +3,7 @@ let obj1;
 let obj2;
 
 let wallTexture;
+let floorTexture;
 let ceilingTexture;
 
 let camAngle = 0;
@@ -13,7 +14,8 @@ async function preload() {
     obj1 = await loadModel('star_girl.obj');
     obj2 = await loadModel('test.obj');
     wallTexture = loadImage('wall.jpg');
-    ceilingTexture = loadImage('wood.jpg');
+    floorTexture = loadImage('wood.jpg');
+    ceilingTexture = loadImage('ceiling.jpg');
     console.log("Models loaded successfully");
   } catch (err) {
     console.error("Error loading model:", err);
@@ -24,14 +26,15 @@ async function preload() {
 
 function setup() {
   createCanvas(1900, 1080, WEBGL);
+  pixelDensity(1);
 }
 
 
 
 function draw() {
   // Set camera position
-  let camX = sin(camAngle);
-  let camZ = cos(camAngle);
+  let camX = sin(camAngle)*1000;
+  let camZ = cos(camAngle)*1000;
   camera(camX, 0, camZ, 0, 0, 0, 0, 1, 0);
 
   // Setting the vector values for the directional light
@@ -39,54 +42,53 @@ function draw() {
   let dy = 500;
   let dz = 250;
 
+  depthTest();
+
   // Creating the ambient light  
   ambientLight(64, 64, 64);
 
   lights();
 
   // Create spotlight
-  spotLight(128, 128, 128, -1500, 500, 1500, 1, 0, 0, PI / 4, 5);
+  spotLight(255, 255, 255, 0, 0, 0, 0, 0, -1, PI / 2,50);
+  pointLight(255, 0, 255, 0, 0, 0);
 
   // Creating the directional light 
   // by using the given vector 
   //directionalLight(255, 255, 255, dx, dy, dz);
 
-  shininess(16);
+  shininess(32);
   specularColor(255, 255, 255);
-  specularMaterial(255, 255, 255);
+  specularMaterial(48, 48, 48);
 
-  background(255, 255, 255);
-  ambientMaterial(128, 128, 128);
+  //background(255, 255, 255);
+  ambientMaterial(32, 32, 32);
 
   // Draw rectangle (rectangular prism)
-  //push();
   textureMode(NORMAL);
 
-  //fill(255,255,255); // Rectangle color
   beginShape(QUADS);
 
-  texture(wallTexture);
+  //depthTest(DISABLE_DEPTH_TEST);
+  texture(ceilingTexture);
   vertex(-1500, -250, 1500, 0, 0);
   vertex(1500, -250, 1500, 1, 0);
   vertex(1500, 250, 1500, 1, 1);
   vertex(-1500, 250, 1500, 0, 1);
 
-  // Back face
-  texture(wallTexture);
+  texture(ceilingTexture);
   vertex(-1500, -250, -1500, 0, 0);
   vertex(-1500, 250, -1500, 0, 1);
   vertex(1500, 250, -1500, 1, 1);
   vertex(1500, -250, -1500, 1, 0);
 
-  // Left face
-  texture(wallTexture);
+  texture(ceilingTexture);
   vertex(-1500, -250, 1500, 0, 0);
   vertex(-1500, 250, 1500, 0, 1);
   vertex(-1500, 250, -1500, 1, 1);
   vertex(-1500, -250, -1500, 1, 0);
 
-  // Right face
-  texture(wallTexture);
+  texture(ceilingTexture);
   vertex(1500, -250, 1500, 0, 0);
   vertex(1500, -250, -1500, 1, 0);
   vertex(1500, 250, -1500, 1, 1);
@@ -96,13 +98,19 @@ function draw() {
 
   beginShape(QUADS);
 
+  //depthTest(DISABLE_DEPTH_TEST);
   // Top face
-  texture(ceilingTexture);
+  texture(floorTexture);
   vertex(-1500, 250, 1500, 0, 0);
   vertex(1500, 250, 1500, 1, 0);
   vertex(1500, 250, -1500, 1, 1);
   vertex(-1500, 250, -1500, 0, 1);
 
+  endShape();
+
+  beginShape(QUADS);
+
+  //depthTest(DISABLE_DEPTH_TEST);
   // Bottom face
   texture(ceilingTexture);
   vertex(-1500, -250, 1500, 0, 0);
@@ -122,7 +130,11 @@ function draw() {
   //pop(); // Restore previous transformation state
 
   push(); // Save current transformation state
-  translate(1500, 0, 0); // Move to right side of rectangle
+
+
+  //depthTest(DISABLE_DEPTH_TEST);
+
+  translate(0, 0, -1000); // Move to right side of rectangle
   rotateX(135);
   scale(150); // Scale down model 2
   noStroke();
