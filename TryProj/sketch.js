@@ -1,12 +1,18 @@
 let angle = 0;
-let obj;
+let obj1;
+let obj2;
 
-function preload(){
-  obj = loadModel('star_girl.obj');
+async function preload(){
+  try {
+    obj1 = await loadModel('star_girl.obj');
+    obj2 = await loadModel('test.obj');
+    console.log("Model loaded successfully");
+  } catch(err) {
+    console.error("Error loading model:", err);
+  }
 }
-
 function setup() {
-  createCanvas(500, 500, WEBGL);
+  createCanvas(1900, 1080, WEBGL);
 }
 
 function draw() {
@@ -31,7 +37,9 @@ function draw() {
 
   background(255);
   ambientMaterial(128,128,128);
-  translate(0,100);
+  translate(0,0,0);
+  fill(200);
+  box(4000, 1000, 4000);
 
   // given points from the given directions 
   pointLight(255, 255, 255, 0, -50, 0); 
@@ -41,8 +49,21 @@ function draw() {
   rotateZ(angle);
   
  
-  // box(100);
+  // Render first model
+  push(); // Save current transformation state
+  translate(-100, 0, 0); // Move to left side
+  scale(1); // Scale down
   noStroke();
-  model(obj);
-  angle += 0.02;
+  model(obj1);
+  pop(); // Restore previous transformation state
+
+  // Render second model
+  push(); // Save current transformation state
+  translate(100, 0, 0); // Move to right side
+  scale(100); // Scale down
+  noStroke();
+  model(obj2);
+  pop(); // Restore previous transformation state
+  
+  //angle += 0.02;
 }
