@@ -13,6 +13,7 @@ async function preload() {
   try {
     obj1 = await loadModel('star_girl.obj');
     obj2 = await loadModel('takodachi.obj');
+    obj3 = await loadModel('floating_island.obj');
     wallTexture = loadImage('wall.jpg');
     floorTexture = loadImage('wood.jpg');
     ceilingTexture = loadImage('ceiling.jpg');
@@ -142,6 +143,19 @@ function draw() {
   noStroke();
   fill(128, 64, 128); // Set obj2 to be reflective
   model(obj1);
+  pop();
+
+
+  lights();
+
+  push();
+  translate(900, 250, 200);
+  rotateX(84.8);
+  rotateY(1);
+  scale(100);
+  noStroke();
+  ambientMaterial(128, 64, 128); // Set obj3 to be reflective
+  model(obj3);
   pop();
 }
 
