@@ -20,8 +20,6 @@ async function preload() {
   } catch (err) {
     console.error("Error loading model:", err);
   }
-
-  //wallTexture = loadModel('wall.jpg');
 }
 
 function setup() {
@@ -29,12 +27,10 @@ function setup() {
   pixelDensity(1);
 }
 
-
-
 function draw() {
   // Set camera position
-  let camX = sin(camAngle)*900;
-  let camZ = cos(camAngle)*900;
+  let camX = sin(camAngle) * 900;
+  let camZ = cos(camAngle) * 900;
   camera(camX, 0, camZ, 0, 0, 0, 0, 1, 0);
 
   // Creating the ambient light  
@@ -43,11 +39,13 @@ function draw() {
   lights();
 
   // Create spotlight
-  spotLight(255, 255, 255, 0, 0, 0, 0, 0, -1, PI / 2,50);
-
-  shininess(32);
+  spotLight(255, 255, 255, 0, 0, -50, 0, 0, -1, PI / 2, 50);
+  spotLight(255, 255, 255, 0, 0, 50, 0, 0, 1, PI / 8, 100);
+  //spotLight(255, 0, 255, 1000, 0, 1000, 1, 0, 1, PI / 2, 50);
+  
+  shininess(16);
   specularColor(255, 255, 255);
-  specularMaterial(48, 48, 48);
+  specularMaterial(64, 64, 64);
   ambientMaterial(32, 32, 32);
 
   textureMode(NORMAL);
@@ -101,7 +99,7 @@ function draw() {
   translate(0, 0, -1480);
   rotateX(135);
   scale(145, 145, 25);
-  fill(0, 0, 0, 255); 
+  fill(0, 0, 0, 255);
   noStroke();
   model(obj2);
   pop();
@@ -109,16 +107,44 @@ function draw() {
   lights();
 
   push();
-  translate(0, 0, -1000); 
+  translate(0, 0, -1000);
   rotateX(135);
-  scale(150); 
+  scale(150);
   noStroke();
   specularMaterial(128, 0, 128); // Set obj2 to be reflective
   model(obj2);
   pop();
 
-  
+  noLights();
+
+  push();
+  translate(0, 100, 1480);
+  rotateX(20.4);
+  rotateZ(18.9);
+  scale(0.95, 0.95, 1);
+  noStroke();
+  fill(0, 0, 0, 255); // Set obj2 to be reflective
+  model(obj1);
+  pop();
+
+  lights();
+
+  // Adjust lighting for obj1
+  ambientLight(128, 128, 128); // Increase ambient light
+  pointLight(255, 255, 255, 0, -100, 500); // Add a point light source from infront of object
+  pointLight(255, 255, 255, 1000, -100, 1000); // Add a point light source from left of object
+
+  push();
+  translate(0, 100, 1000);
+  rotateX(20.4);
+  rotateZ(18.9);
+  scale(1);
+  noStroke();
+  fill(128, 64, 128); // Set obj2 to be reflective
+  model(obj1);
+  pop();
 }
+
 
 function mousePressed() {
   lastMouseX = mouseX;
